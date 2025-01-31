@@ -35,7 +35,7 @@ pico_sdk_init()
 
 
 # Adiconar bibliotecas aqui!!!!
-add_executable(pio_matrix pio_matrix.c keypad.c animations.c)
+add_executable(pio_matrix pio_matrix.c animations.c)
 
 
 pico_set_program_name(pio_matrix "pio_matrix")

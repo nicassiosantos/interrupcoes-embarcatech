@@ -12,12 +12,11 @@
 
 #define NUM_PIXELS 25
 
-// pino do led 5x5
-#define OUT_PIN 7
 
-
-extern void pico_keypad_init(void);
-extern char pico_keypad_get_key(void);
+#define OUT_PIN 7 // pino do led 5x5
+#define LED_R 13 // pino led vermelho
+#define LED_G 11 // pino led verde
+#define LED_B 12 // pino led azul
 
 // FUNÇÕES DAS ANIMAÇÕES
 extern void animacao_olho(PIO pio, uint sm);
@@ -100,122 +99,27 @@ int main()
     PIO pio = pio0;
     uint32_t valor_led;
 
-    pico_keypad_init();
+    //Inicialização dos pinos 
+    gpio_init(LED_R);              // Inicializa o pino do LED
+    gpio_set_dir(LED_R, GPIO_OUT); // Configura o pino como saída
+    gpio_put(LED_R, 0);            // Garante que o LED inicie apagado
+
+
     stdio_init_all();
-    char last_key = 0;
 
     // configurações da PIO
     uint offset = pio_add_program(pio, &pio_matrix_program);
     uint sm = pio_claim_unused_sm(pio, true);
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
 
+
     while (true)
     {
-        char caracter_press = pico_keypad_get_key();
-
-        if (caracter_press == 'A' && caracter_press != last_key)
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            desenho_pio(valor_led, pio, sm, caracter_press);
-        }
-
-        else if (caracter_press == 'B' && caracter_press != last_key) // Se caso para tecla 'B'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            desenho_pio(valor_led, pio, sm, caracter_press); // Chamada para acender LEDs azuis
-        }
-
-        else if (caracter_press == 'C' && caracter_press != last_key)
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            desenho_pio(valor_led, pio, sm, caracter_press);
-        }
-
-        else if (caracter_press == 'D' && caracter_press != last_key)
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            desenho_pio(valor_led, pio, sm, caracter_press);
-        }
-
-        else if (caracter_press == '1' && caracter_press != last_key) // Se caso para tecla '1'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            coracao_batendo(valor_led, pio, sm, 3, 150);
-        }
-
-        else if (caracter_press == '2' && caracter_press != last_key) // Se caso para tecla '2'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            animacao_olho(pio, sm); // Chamada para acender LEDs azuis
-        }
-
-        else if (caracter_press == '3' && caracter_press != last_key) // Se caso para tecla '3'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            tetrix(pio, sm); // função para gerar animação do leds
-        }
-        
-        else if (caracter_press == '4' && caracter_press != last_key) // Se caso para tecla '4'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            seta(pio, sm); // função para gerar animação do leds
-        }
-
-
-        else if (caracter_press == '5' && caracter_press != last_key) // Se caso para tecla '5'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            carinha(pio, sm); 
-        }
-
-        else if (caracter_press == '6' && caracter_press != last_key) // Se caso para tecla '6'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            cobra_animacao(valor_led, pio, sm, 3, 150);
-        }
-      
-        else if (caracter_press == '7' && caracter_press != last_key) // Se caso para tecla '7'
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            espiral_expansiva(pio, sm); // função para gerar animação do leds
-        }
-
-        else if (caracter_press == '#' && caracter_press != last_key)
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            desenho_pio(valor_led, pio, sm, caracter_press);
-        }
-
-        else if (caracter_press == '*' && caracter_press != last_key)
-        {
-            printf("\nTecla pressionada: %c\n", caracter_press);
-            last_key = caracter_press;
-            reboot();
-        }
-
-        else if (!caracter_press)
-        {
-            last_key = 0;
-        }
-      
-        else if (caracter_press && caracter_press != last_key)
-        {
-            last_key = caracter_press;
-            printf("\nTecla pressionada: %c\n", caracter_press);
-        }
-
-        sleep_ms(500);
+        // LED piscando
+        gpio_put(LED_R, 1); 
+        sleep_ms(200);            
+        gpio_put(LED_R, 0); 
+        sleep_ms(200);   
+                     
     }
 }
