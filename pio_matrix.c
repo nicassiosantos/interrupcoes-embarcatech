@@ -16,17 +16,18 @@
 #define OUT_PIN 7 // pino do led 5x5
 #define LED_R 13 // pino led vermelho
 #define LED_G 11 // pino led verde
-#define LED_B 12 // pino led azul
+#define LED_B 12 // pino led azul 
+#define button_A 5 // pino do botão A
 
+//Variavél global
+static volatile uint cont = 0;
+static volatile uint32_t last_time = 0;
+PIO pio = pio0; 
+uint volatile sm_global = 0;
 // FUNÇÕES DAS ANIMAÇÕES
-extern void animacao_olho(PIO pio, uint sm);
-extern void coracao_batendo(uint32_t valor_led, PIO pio, uint sm, int repeticoes, int delay_ms);
-extern void tetrix(PIO pio, uint sm);
-extern void seta(PIO pio, uint sm);
-extern void carinha(PIO pio, uint sm);
-extern void cobra_animacao(uint32_t valor_led, PIO pio, uint sm, int repeticoes, int delay_ms);
+extern void numeros(PIO pio, uint sm, uint cont);
 
-extern void espiral_expansiva(PIO pio, uint sm);
+static void gpio_irq_handler(uint gpio, uint32_t events);
 
 // rotina para definição da intensidade de cores do led
 uint32_t matrix_rgb(double b, double r, double g)
@@ -94,9 +95,24 @@ void reboot()
     reset_usb_boot(0, 0);
 }
 
+/// Função de interrupção com debouncing
+void gpio_irq_handler_button_A(uint gpio, uint32_t events)
+{
+    // Obtém o tempo atual em microssegundos
+    uint32_t current_time = to_us_since_boot(get_absolute_time());
+    printf("valor do contador = %d\n", cont);
+    // Verifica se passou tempo suficiente desde o último evento
+    if (current_time - last_time > 200000 && cont < 10) // 200 ms de debouncing
+    {
+        numeros(pio, sm_global, cont);
+        last_time = current_time; // Atualiza o tempo do último evento
+        cont++;                                     // incrementa a variavel de verificação
+    }
+}
+
+
 int main()
 {
-    PIO pio = pio0;
     uint32_t valor_led;
 
     //Inicialização dos pinos 
@@ -104,22 +120,30 @@ int main()
     gpio_set_dir(LED_R, GPIO_OUT); // Configura o pino como saída
     gpio_put(LED_R, 0);            // Garante que o LED inicie apagado
 
+    gpio_init(button_A);
+    gpio_set_dir(button_A, GPIO_IN); 
+    gpio_pull_up(button_A);          
 
     stdio_init_all();
 
     // configurações da PIO
     uint offset = pio_add_program(pio, &pio_matrix_program);
     uint sm = pio_claim_unused_sm(pio, true);
+    sm_global = sm;
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
 
+    // Configuração da interrupção com callback
+    gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler_button_A);
+
+    numeros(pio, sm, cont);
 
     while (true)
     {
         // LED piscando
         gpio_put(LED_R, 1); 
-        sleep_ms(200);            
+        sleep_ms(100);            
         gpio_put(LED_R, 0); 
-        sleep_ms(200);   
+        sleep_ms(100);   
                      
     }
 }
