@@ -18,13 +18,16 @@
 #define LED_G 11 // pino led verde
 #define LED_B 12 // pino led azul 
 #define button_A 5 // pino do botão A
+#define button_B 6 // pino do botão B
+
 
 //Variavél global
 static volatile uint cont = 0;
 static volatile uint32_t last_time = 0;
 PIO pio = pio0; 
 uint volatile sm_global = 0;
-// FUNÇÕES DAS ANIMAÇÕES
+
+// FUNÇÕES DOS NÚMEROS
 extern void numeros(PIO pio, uint sm, uint cont);
 
 static void gpio_irq_handler(uint gpio, uint32_t events);
@@ -39,90 +42,42 @@ uint32_t matrix_rgb(double b, double r, double g)
     return (G << 24) | (R << 16) | (B << 8);
 }
 
-// rotina para acionar a matrix de leds - ws2812b
-void desenho_pio(uint32_t valor_led, PIO pio, uint sm, char caracter_press)
-{
-    if (caracter_press == 'A')
-    {
-        for (int16_t i = 0; i < NUM_PIXELS; i++)
-        {
-            valor_led = matrix_rgb(0.0, 0.0, 0.0);
-            pio_sm_put_blocking(pio, sm, valor_led);
-        }
-    }
-
-    else if (caracter_press == 'B') // Novo caso para tecla 'B'
-    {
-
-        for (int16_t i = 0; i < NUM_PIXELS; i++)
-        {
-            valor_led = matrix_rgb(1.0, 0.0, 0.0); // LEDs na cor azul com 100% de intensidade
-            pio_sm_put_blocking(pio, sm, valor_led);
-        }
-    }
-
-    else if (caracter_press == 'C') // Caso para tecla 'C'
-    {
-        for (int16_t i = 0; i < NUM_PIXELS; i++)
-        {
-            valor_led = matrix_rgb(0.0, 0.8, 0.0); // LEDs na cor verde com 80% de intensidade
-            pio_sm_put_blocking(pio, sm, valor_led);
-        }
-    }
-
-    else if (caracter_press == 'D')
-    {
-        for (int16_t i = 0; i < NUM_PIXELS; i++)
-        {
-            valor_led = matrix_rgb(0.0, 0.0, 0.5);
-            pio_sm_put_blocking(pio, sm, valor_led);
-        }
-    }
-
-    else if (caracter_press == '#')
-    {
-        for (int16_t i = 0; i < NUM_PIXELS; i++)
-        {
-            valor_led = matrix_rgb(0.2, 0.2, 0.2);
-            pio_sm_put_blocking(pio, sm, valor_led);
-        }
-    }
-}
-
-// Função para reboot
-void reboot()
-{
-    reset_usb_boot(0, 0);
-}
-
-/// Função de interrupção com debouncing
-void gpio_irq_handler_button_A(uint gpio, uint32_t events)
+/// Função de interrupção 
+void gpio_irq_handler(uint gpio, uint32_t events)
 {
     // Obtém o tempo atual em microssegundos
     uint32_t current_time = to_us_since_boot(get_absolute_time());
-    printf("valor do contador = %d\n", cont);
-    // Verifica se passou tempo suficiente desde o último evento
-    if (current_time - last_time > 200000 && cont < 10) // 200 ms de debouncing
-    {
+    
+    // Verifica qual botão foi pressionado
+    if (gpio == button_A && (current_time - last_time > 200000) && cont < 9) {
+        last_time = current_time;
+        cont++;
         numeros(pio, sm_global, cont);
-        last_time = current_time; // Atualiza o tempo do último evento
-        cont++;                                     // incrementa a variavel de verificação
+    }
+    else if (gpio == button_B && (current_time - last_time > 200000) && cont >= 1) {
+        last_time = current_time;
+        cont--;
+        numeros(pio, sm_global, cont);
     }
 }
-
 
 int main()
 {
     uint32_t valor_led;
 
     //Inicialização dos pinos 
-    gpio_init(LED_R);              // Inicializa o pino do LED
-    gpio_set_dir(LED_R, GPIO_OUT); // Configura o pino como saída
-    gpio_put(LED_R, 0);            // Garante que o LED inicie apagado
+
+    gpio_init(LED_R);              
+    gpio_set_dir(LED_R, GPIO_OUT); 
+    gpio_put(LED_R, 0);            
 
     gpio_init(button_A);
     gpio_set_dir(button_A, GPIO_IN); 
     gpio_pull_up(button_A);          
+
+    gpio_init(button_B);
+    gpio_set_dir(button_B, GPIO_IN); 
+    gpio_pull_up(button_B);
 
     stdio_init_all();
 
@@ -133,7 +88,9 @@ int main()
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
 
     // Configuração da interrupção com callback
-    gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler_button_A);
+    gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
+
+    gpio_set_irq_enabled_with_callback(button_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
 
     numeros(pio, sm, cont);
 
