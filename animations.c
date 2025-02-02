@@ -15,10 +15,12 @@
 // pino do led 5x5
 #define OUT_PIN 7
 
+// pino do buzzer
 #define BUZZER_PIN 28
 
 extern uint32_t matrix_rgb(double b, double r, double g);
 
+//Função para desenhar o número 0 na matriz
 void numero_0(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7, 0.7, 0.7, 0,
@@ -38,6 +40,7 @@ void numero_0(PIO pio, uint sm){
 
 }
 
+//Função para desenhar o número 1 na matriz
 void numero_1(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0  ,    0 ,  0.7, 0,
@@ -51,12 +54,13 @@ void numero_1(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 1
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 2 na matriz
 void numero_2(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7,    0.7,  0.7, 0,
@@ -70,12 +74,13 @@ void numero_2(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 2
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 3 na matriz
 void numero_3(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7,    0.7,  0.7, 0,
@@ -89,12 +94,13 @@ void numero_3(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 3
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 4 na matriz
 void numero_4(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7,    0,  0.7, 0,
@@ -108,12 +114,13 @@ void numero_4(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 4
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 5 na matriz
 void numero_5(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7,    0.7,  0.7, 0,
@@ -127,12 +134,13 @@ void numero_5(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 5
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 6 na matriz
 void numero_6(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7,    0.7,  0.7, 0,
@@ -146,12 +154,13 @@ void numero_6(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 6
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 7 na matriz
 void numero_7(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7 ,    0.7 ,  0.7, 0,
@@ -165,12 +174,13 @@ void numero_7(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 7
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 8 na matriz
 void numero_8(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7, 0.7, 0.7, 0,
@@ -184,12 +194,13 @@ void numero_8(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 8
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função para desenhar o número 9 na matriz
 void numero_9(PIO pio, uint sm){
     double frame[1][25] = {
         {0, 0.7, 0.7, 0.7, 0,
@@ -203,12 +214,13 @@ void numero_9(PIO pio, uint sm){
     
     for (int16_t i = 0; i < NUM_PIXELS; i++)
     {
-        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 0
+        valor_led = matrix_rgb(0.0, frame[0][24 - i], 0.0); // LEDs vermelhos para o número 9
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 
 }
 
+//Função que recebe um númro inteiro e imprime o número correspondente na matriz de leds
 void numeros(PIO pio, uint sm, uint cont){ 
 
     if(cont == 0){
