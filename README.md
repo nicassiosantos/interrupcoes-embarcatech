@@ -1,16 +1,17 @@
-# Tarefa 1: LED 5x5
+#Controle de uma matriz de Leds Através de Interrupções
 
-Este repositório contém exemplo de código voltado para a implementação e utilização *Led 5x5* em microcontroladores.
+Este repositório contém um código que implementa a contagem e o decremento de 0 a 9 através de pushbuttons com interrupções, com visualização através de uma Matriz de Leds 5x5 endereçavéis(WS2812).
 
 ## 🎯 Objetivo
 
-- Demonstrar como configurar e utilizar as LED 5x5.
-- Fornecer exemplo prático para enviar e receber dados.
-- Facilitar a integração de dispositivos utilizando Leds e Teclado Matricial.
-- Criar Animações com LED 5x5
+• Compreender o funcionamento e a aplicação de interrupções em microcontroladores.
+• Identificar e corrigir o fenômeno do bouncing em botões por meio de debouncing via software.
+• Manipular e controlar LEDs comuns e LEDs endereçáveis WS2812.
+• Fixar o estudo do uso de resistores de pull-up internos em botões de acionamento.
+• Desenvolver um projeto funcional que combine hardware e software.
 
 ## 📹 video do Projeto
-- **[Ver Video](https://drive.google.com/file/d/1hF8kwR5JhvMnlLH3D5LVE1glkn9YcFFx/view?usp=sharing)**
+- **[Ver Video](https://drive.google.com/file/d/1woezK0IpzxqLYDcmzJxpNSe0w7XwkcwF/view?usp=sharing)**
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -24,53 +25,23 @@ Este repositório contém exemplo de código voltado para a implementação e ut
 ## 🗂️ Estrutura do Repositório
 
 - `pio_matrix.c`: Código-fonte.
-- `keypad.c` : Código do Teclado Matricial
-- `animations.c`: Código-fonte das animações.
-- `README.md`/: Tutoriais e explicações sobre a comunicação UART e Documentação do projeto.
+- `animations.c`: Código-fonte dos números que serão impressos na matriz.
+- `README.md`/: Tutoriais e explicações sobre a Documentação do projeto.
 - `diagram.jso`n/: Diagramas de conexão e esquemas de hardware.
 
 ## 🚀 Como Utilizar
 
-###  *Pressione as Teclas e será execultado uma ação:**
+###  *Pressione o Button A ou Button B e será execultado uma ação:**
 
-*As teclas de 0 a 7 do teclado matricial terão animações*
+#### Button A: Incrementa o número e o apresenta na matriz de leds.
 
-#### Tecla 1. Coração Batendo.
-
-#### Tecla 2. Olho Mexendo.
-
-#### Tecla 3. Tetrix.
-
-#### Tecla 4. Seta.
-
-#### Tecla 5. Carinha.
-
-#### Tecla 6. Cobra.
-
-#### Tecla 7. Expiral.
-
-#### Tecla A. LEDs deverão ser desligados.
-
-#### Tecla B. LEDs deverão ser ligados na cor azul, no nível de intensidade de 100% da luminosidade máxima.
-
-#### Tecla C.LEDs deverão ser ligados na cor vermelha, no nível de intensidade de 80% da luminosidade máxima.
-
-#### Tecla D. LEDs deverão ser ligados na cor verde, no nível de intensidade de 50% da luminosidade máxima.
-
-#### Tecla #. LEDs deverão ser ligados na cor branca, no nível de intensidade de 20% da luminosidade máxima.
-
-#### Tecla *. BOOTSEL.
+#### Button B: Dncrementa o número e o apresenta na matriz de leds.
 
 ## ✨ Funcionalidades Demonstradas
 
-- Animações com 5 frames ou mais.
-- Efeitos com Leds RGB.
+- Números com a matriz de leds.
+- Led RGB piscando em vermelho 5 vezes por segundo.
 
 ## 💡 Desenvolvido com dedicação por:
-- **[Henrique Santos.](https://github.com/henr1queSantos25)**
-- **[Erickson Moura.](https://github.com/ericksonsmoura)**
 - **[Nicassio Santos.](https://github.com/nicassiosantos)**
-- **[Everton Espedito.](https://github.com/EvertonEspedito)**
-- **[MarcusVMFF.](https://github.com/MarcusVMFF)**
-- **[João Pasip.](https://github.com/joao-pasip)**
-- **[Osaná Thiago.](https://github.com/OsanaThiago)**
+
