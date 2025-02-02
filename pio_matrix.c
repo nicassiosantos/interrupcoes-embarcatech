@@ -30,6 +30,7 @@ uint volatile sm_global = 0;
 // FUNÇÕES DOS NÚMEROS
 extern void numeros(PIO pio, uint sm, uint cont);
 
+//Definindo o escopo da função de interrupção
 static void gpio_irq_handler(uint gpio, uint32_t events);
 
 // rotina para definição da intensidade de cores do led
@@ -51,20 +52,18 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     // Verifica qual botão foi pressionado
     if (gpio == button_A && (current_time - last_time > 200000) && cont < 9) {
         last_time = current_time;
-        cont++;
-        numeros(pio, sm_global, cont);
+        cont++; //Incrementa o contador caso o botão pressionado for o button A
+        numeros(pio, sm_global, cont); //Imprime na matriz de leds o valor do contador
     }
     else if (gpio == button_B && (current_time - last_time > 200000) && cont >= 1) {
         last_time = current_time;
-        cont--;
-        numeros(pio, sm_global, cont);
+        cont--; //Decrementa o contador caso o botão pressionado for o button B
+        numeros(pio, sm_global, cont); //Imprime na matriz de leds o valor do contador
     }
 }
 
 int main()
 {
-    uint32_t valor_led;
-
     //Inicialização dos pinos 
 
     gpio_init(LED_R);              
@@ -87,16 +86,17 @@ int main()
     sm_global = sm;
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
 
-    // Configuração da interrupção com callback
+    // Configuração das interrupções com callback
+
     gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
 
     gpio_set_irq_enabled_with_callback(button_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
 
-    numeros(pio, sm, cont);
+    numeros(pio, sm, cont); //imprime o valor de cont na matriz de leds antes de entrar no while principal
 
     while (true)
     {
-        // LED piscando
+        // LED piscando 5 vezes por segundo
         gpio_put(LED_R, 1); 
         sleep_ms(100);            
         gpio_put(LED_R, 0); 
